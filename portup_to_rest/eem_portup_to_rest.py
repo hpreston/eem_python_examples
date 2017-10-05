@@ -34,11 +34,11 @@ def send_details(switch, port, macs):
     """
     Send details to a REST endpoint.
     """
-    url = discovery_server + "/discovery/link"
+    url = discovery_server + "/api/discovery/link"
     data = {
             "switch": switch,
             "interface": port,
-            "mac_address": macs
+            "mac_addresses": macs
            }
 
     response = requests.post(url, headers = headers, json = data, verify=False)
@@ -85,4 +85,4 @@ if __name__ == '__main__':
 
     get_interface_info(args.syslog)
 
-    send_details("switch1", "ethernet1/1", []"0000.aaaa.bbbb"])
+    send_details("switch1", "ethernet1/1", ["0000.aaaa.bbbb"])
