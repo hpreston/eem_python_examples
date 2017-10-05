@@ -13,6 +13,12 @@ Illustrate the following concepts:
 """
 
 import requests
+import urllib3
+
+# Silence the insecure warning due to SSL Certificate
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+urllib3.disable_warnings(urllib3.exceptions.SNIMissingWarning)
+urllib3.disable_warnings(urllib3.exceptions.InsecurePlatformWarning)
 
 # REST Server details
 url = "https://requestb.in/1h99oul1"
@@ -28,7 +34,7 @@ def send_details(switch, port, mac):
             "mac_address": mac
            }
 
-    response = requests.post(url, headers = headers, json = data)
+    response = requests.post(url, headers = headers, json = data, verify=False)
     return response
 
 # *Oct  5 20:04:41.343: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to up
