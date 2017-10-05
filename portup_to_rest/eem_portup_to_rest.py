@@ -42,7 +42,7 @@ def get_interface_info():
 
 # Entry point for program
 if __name__ == '__main__':
-    Setup Arg Parse for Command Line parameters
+    # Setup Arg Parse for Command Line parameters
     import argparse
     parser = argparse.ArgumentParser()
 
