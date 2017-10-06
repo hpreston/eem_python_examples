@@ -21,18 +21,24 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 urllib3.disable_warnings(urllib3.exceptions.SNIMissingWarning)
 urllib3.disable_warnings(urllib3.exceptions.InsecurePlatformWarning)
 
+# Localhost details
+device_mgmt = "10.0.2.15"
+device_user = "vagrant"
+device_password = "vagrant"
+
 # REST Server details
-url = "https://requestb.in/y9b0eqy9"
+discovery_server = "https://10.192.81.112"
 headers = {"Content-type": "application/json"}
 
-def send_details(switch, port, mac):
+def send_details(switch, port, macs):
     """
     Send details to a REST endpoint.
     """
+    url = discovery_server + "/discovery/link"
     data = {
             "switch": switch,
-            "port": port,
-            "mac_address": mac
+            "interface": port,
+            "mac_address": macs
            }
 
     response = requests.post(url, headers = headers, json = data, verify=False)
@@ -42,9 +48,15 @@ def get_device_hostname():
     """
     Get the device hostname
     """
-    url = "https://192.168.35.1/restconf/data/Cisco-IOS-XE-native:native/hostname"
-    headers = {"Content-type": "application/yang-data+json", "Accept": "application/yang-data+json"}
-    response = requests.get(url, headers = headers, auth = ("vagrant", "vagrant"))
+    url = "https://{}/restconf/data/Cisco-IOS-XE-native:native/hostname".format(device_mgmt)
+    headers = {"Content-type": "application/yang-data+json",
+               "Accept": "application/yang-data+json"
+              }
+    response = requests.get(url,
+                            headers = headers,
+                            auth = (device_user, device_password),
+                            verify = False
+                           )
     return response.json()["Cisco-IOS-XE-native:hostname"]
 
 
@@ -73,4 +85,4 @@ if __name__ == '__main__':
 
     get_interface_info(args.syslog)
 
-    send_details("switch1", "ethernet1/1", "0000.aaaa.bbbb")
+    send_details("switch1", "ethernet1/1", []"0000.aaaa.bbbb"])
