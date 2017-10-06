@@ -12,6 +12,7 @@ Illustrate the following concepts:
 - Send data off box for processing
 """
 
+import re
 import requests
 import urllib3
 
@@ -37,13 +38,25 @@ def send_details(switch, port, mac):
     response = requests.post(url, headers = headers, json = data, verify=False)
     return response
 
+def get_device_hostname():
+    """
+    Get the device hostname
+    """
+    url = "https://192.168.35.1/restconf/data/Cisco-IOS-XE-native:native/hostname"
+    headers = {"Content-type": "application/yang-data+json", "Accept": "application/yang-data+json"}
+    response = requests.get(url, headers = headers, auth = ("vagrant", "vagrant"))
+    return response.json()["Cisco-IOS-XE-native:hostname"]
+
+
 # *Oct  5 20:04:41.343: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to up
-def get_interface_info():
+def get_interface_info(syslog):
     """
     Retrieve details about the interface desired.
     """
+    pattern = re.compile('.* Interface (.*), .* ')
+    interface = pattern.match(syslog).group(1)
+    print("Interface: {}".format(interface))
 
-    return true
 
 
 # Entry point for program
@@ -56,6 +69,8 @@ if __name__ == '__main__':
     parser.add_argument("syslog", help = "Syslog Message")
     args = parser.parse_args()
 
-    print("Sent Arguement: {}".format(args.syslog))
+    # print("Sent Arguement: {}".format(args.syslog))
+
+    get_interface_info(args.syslog)
 
     send_details("switch1", "ethernet1/1", "0000.aaaa.bbbb")
