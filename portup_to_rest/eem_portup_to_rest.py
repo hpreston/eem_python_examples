@@ -67,7 +67,8 @@ def get_interface_info(syslog):
     """
     pattern = re.compile('.* Interface (.*), .* ')
     interface = pattern.match(syslog).group(1)
-    print("Interface: {}".format(interface))
+
+    return {"interface": interface}
 
 
 
@@ -81,8 +82,7 @@ if __name__ == '__main__':
     parser.add_argument("syslog", help = "Syslog Message")
     args = parser.parse_args()
 
-    # print("Sent Arguement: {}".format(args.syslog))
+    interface_info = get_interface_info(args.syslog)
+    hostname = get_device_hostname()
 
-    get_interface_info(args.syslog)
-
-    send_details("switch1", "ethernet1/1", ["0000.aaaa.bbbb"])
+    send_details(hostname, interface_info["interface"], ["0000.aaaa.bbbb"])
