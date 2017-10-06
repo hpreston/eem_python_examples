@@ -27,6 +27,7 @@ device_user = "vagrant"
 device_password = "vagrant"
 
 # REST Server details
+# Replace the IP with the IP of the server running the discovery api
 discovery_server = "https://10.192.81.112"
 headers = {"Content-type": "application/json"}
 
@@ -60,15 +61,22 @@ def get_device_hostname():
     return response.json()["Cisco-IOS-XE-native:hostname"]
 
 
-# *Oct  5 20:04:41.343: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to up
+
 def get_interface_info(syslog):
     """
     Retrieve details about the interface desired.
     """
+    # Sample syslog message:
+    # *Oct  5 20:04:41.343: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to up
     pattern = re.compile('.* Interface (.*), .* ')
     interface = pattern.match(syslog).group(1)
 
-    return {"interface": interface}
+    # Differences between L2 and L3 functions make the commands around mac
+    # addresses different form Catalyst to IOS, providing placeholders for
+    # actual mac address code that woudl be used on a Catalyst Switch
+    mac_addresses = ["0000.aaaa.bbbb"]
+
+    return {"interface": interface, "mac_addresses": mac_addresses}
 
 
 
@@ -85,4 +93,7 @@ if __name__ == '__main__':
     interface_info = get_interface_info(args.syslog)
     hostname = get_device_hostname()
 
-    send_details(hostname, interface_info["interface"], ["0000.aaaa.bbbb"])
+    send_details(hostname,
+                 interface_info["interface"],
+                 interface_info["mac_addresses"]
+                )
