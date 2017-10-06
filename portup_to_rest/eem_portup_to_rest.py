@@ -21,7 +21,7 @@ urllib3.disable_warnings(urllib3.exceptions.SNIMissingWarning)
 urllib3.disable_warnings(urllib3.exceptions.InsecurePlatformWarning)
 
 # REST Server details
-url = "https://requestb.in/1h99oul1"
+url = "https://requestb.in/y9b0eqy9"
 headers = {"Content-type": "application/json"}
 
 def send_details(switch, port, mac):
@@ -55,5 +55,7 @@ if __name__ == '__main__':
     # Command Line Parameters for Source and Destination IP
     parser.add_argument("syslog", help = "Syslog Message")
     args = parser.parse_args()
+
+    print("Sent Arguement: {}".format(args.syslog))
 
     send_details("switch1", "ethernet1/1", "0000.aaaa.bbbb")
