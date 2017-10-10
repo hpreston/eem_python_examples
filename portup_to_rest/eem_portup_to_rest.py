@@ -60,6 +60,14 @@ def get_device_hostname():
                            )
     return response.json()["Cisco-IOS-XE-native:hostname"]
 
+def get_device_hostname_cli():
+    """
+    Get the device hostname using CLI interface
+    """
+    hostname_pattern = re.compile("\nhostname (.*)\n")
+    hostname_config = cli.cli("show run | inc hostname")
+    hostname = hostname_pattern.match(hostname_config).group(1)
+    return hostname
 
 
 def get_interface_info(syslog):
@@ -91,7 +99,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     interface_info = get_interface_info(args.syslog)
-    hostname = get_device_hostname()
+    hostname = get_device_hostname_cli()
 
     send_details(hostname,
                  interface_info["interface"],
