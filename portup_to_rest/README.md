@@ -51,11 +51,11 @@ csr1kv#guestshell run bash
 * Clone code down
 
 ```
-[guestshell@guestshell ~]$ mkdir /flash/scripts
-[guestshell@guestshell ~]$ cd /flash/scripts/
-[guestshell@guestshell scripts]$ git clone https://github.com/hpreston/eem_python_examples
-[guestshell@guestshell scripts]$ cd eem_python_examples/
-[guestshell@guestshell eem_python_examples]$
+mkdir /flash/scripts
+cd /flash/scripts/
+git clone https://github.com/hpreston/eem_python_examples
+cd eem_python_examples/portup_to_rest
+
 ```
 
 * Update `eem_portup_to_rest.py` file with correct details for your running instance of the discovery server
@@ -77,10 +77,12 @@ headers = {"Content-type": "application/json"}
   * This takes a couple minutes
 * Install Python requirements for script into Guest Shell for Python2.7
 
+Run the following commands from guestshell
 ```
-[guestshell@guestshell eem_python_examples]$ sudo ./install_python_2.7.13_guestshell.sh
-[guestshell@guestshell eem_python_examples]$ cd portup_to_rest/
-[guestshell@guestshell portup_to_rest]$ sudo pip install -t /usr/local/lib/python2.7/site-packages -r requirements.txt
+cd /flash/scripts/eem_python_examples
+sudo ./install_python_2.7.13_guestshell.sh
+cd portup_to_rest/
+sudo pip install -t /usr/local/lib/python2.7/site-packages -r requirements.txt
 ```
 
 * Setup EEM Applet in IOS XE (be sure to exit out of guestshell)

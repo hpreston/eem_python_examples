@@ -11,7 +11,7 @@ Illustrate the following concepts:
 - Gather informaiton from local device
 - Send data off box for processing
 """
-
+import cli
 import re
 import requests
 import urllib3
